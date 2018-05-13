@@ -1,0 +1,13 @@
+--1.Use a subquery to get the product name and unit price of products from the Products table which have a unit price greater than the average unit price from the Order Details table.
+--Note that you need to use [Order Details] since the table name contains whitespace.
+
+SELECT ProductName,UnitPrice
+FROM DBO.PRODUCTS
+WHERE UnitPrice >
+(SELECT AVG(UnitPrice) 
+FROM DBO.[Order Details] );
+
+
+--2.Select from the Employees and Orders tables. Use a subquery to get the first name and employee ID for employees who were associated with orders which shipped from the USA.
+
+SELE
