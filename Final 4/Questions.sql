@@ -60,3 +60,38 @@ AS SourceTable PIVOT
 (
 AVG(UnitPrice) FOR CategoryID IN ([1],[2],[3],[4],[5],[6],[7],[8]) 
 )AS PivotTable;
+
+
+--6.Insert into the Region table the region ID 5 and the description 'Space'.
+--Then, in a second query, select the newly inserted data from the table using a WHERE clause.
+--Note: When you execute a query and the result is fetched, the database will be rolled back to its initial state. This means that you can click "Run Code" repeatedly, starting with a clean slate every time.
+
+
+INSERT INTO DBO.REGION (RegionID, RegionDescription)
+VALUES
+('5', 'Space');
+SELECT * FROM DBO.REGION
+WHERE RegionID= 5;
+
+
+--7.Update the region descriptions in the Region table to be all uppercase, using SET and UPPER().
+--Next, select all data from the table to view your updates.
+
+UPDATE DBO.REGION
+SET RegionDescription= UPPER(RegionDescription);
+
+SELECT * FROM DBO.REGION
+
+
+--8.Write a script that safely checks whether a certain region exists:
+--Declare a custom region @region called 'Space', of type NVARCHAR(25).
+--Use IF NOT EXISTS, ELSE, and BEGIN..END to:
+--throw an error with THROW 50001, 'Error!', 0 if no record whose RegionDescription matches @region exists.
+--select all columns for that region from the Region table if the record does exist.
+
+
+DECLARE @region NVARCHAR(25) = 'Space'
+IF NOT EXISTS (SELECT * FROM Region WHERE RegionDescription = @Region)
+BEGIN THROW 50001, 'Error!',0; END
+ELSE
+BEGIN (SELECT * FROM Region WHERE RegionDescription = @Region); END;
