@@ -35,3 +35,28 @@ ORDER BY (TotalQuantity);
 --Do not use ORDER BY to order your results.
 
 
+SELECT Country,ContactTitle,Count(ContactTitle) AS Count, 
+CASE 
+WHEN GROUPING_ID(Country,ContactTitle) = 0 THEN '' 
+WHEN GROUPING_ID(Country,ContactTitle) = 1 THEN 'Subtotal for' + ' ' + Country 
+END 
+AS Legend
+FROM DBO.CUSTOMERS
+GROUP BY ROLLUP(Country,ContactTitle)
+
+
+--5.Convert the following query to be pivoted, using PIVOT().
+--SELECT CategoryID, AVG(UnitPrice)
+--FROM Products
+--GROUP BY CategoryID;
+--Your result set should look like this:
+
+
+SELECT 'Average Unit Price' as [Per Category], 
+[1],[2],[3],[4],[5],[6],[7],[8]
+FROM 
+(SELECT CategoryID, UnitPrice FROM Products ) 
+AS SourceTable PIVOT 
+(
+AVG(UnitPrice) FOR CategoryID IN ([1],[2],[3],[4],[5],[6],[7],[8]) 
+)AS PivotTable;
