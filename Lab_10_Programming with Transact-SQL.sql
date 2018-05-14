@@ -66,4 +66,20 @@ BEGIN
 	(SELECT DISTINCT ProductCategoryID
 	 FROM SalesLT.vGetAllCategories
 	 WHERE ParentProductCategoryName = 'Bikes');
+	 
+SELECT @AWAverage = AVG(ListPrice), @AWMax = MAX(ListPrice)
+	FROM SalesLT.Product
+	WHERE ProductCategoryID IN
+	(SELECT DISTINCT ProductCategoryID
+	 FROM SalesLT.vGetAllCategories
+	 WHERE ParentProductCategoryName = 'Bikes');
+
+   IF @AWMax >= @MarketMax
+      BREAK
+   ELSE
+      CONTINUE
+END
+
+PRINT 'New average bike price:' + CONVERT(VARCHAR, @AWAverage);
+PRINT 'New maximum bike price:' + CONVERT(VARCHAR, @AWMax);
 
